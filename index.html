@@ -3,131 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Love, Jocelyn</title>
+    <title>Love Games for Jocelyn</title>
     <style>
         body {
+            background-color: pink;
             text-align: center;
             font-family: Arial, sans-serif;
-            background-color: pink;
-            color: white;
         }
         .game-container {
             margin: 20px;
             padding: 20px;
-            background: #ff69b4;
+            background-color: white;
             border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
         button {
-            padding: 10px 20px;
-            margin: 10px;
+            background-color: hotpink;
+            color: white;
             border: none;
-            background: white;
-            color: #ff69b4;
-            font-size: 18px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
             border-radius: 5px;
         }
-        #falling-hearts {
-            position: relative;
-            height: 300px;
-            background: white;
-        }
-        .heart {
-            position: absolute;
-            color: red;
-            font-size: 24px;
+        button:hover {
+            background-color: deeppink;
         }
     </style>
 </head>
 <body>
-    <h1>For My Love, Jocelyn</h1>
+    <h1>Love Games for My Beautiful Princess Jocelyn</h1>
+    
     <div class="game-container">
         <h2>Click for Love</h2>
-        <p id="love-message">Click the button for a sweet message!</p>
-        <button onclick="generateLoveMessage()">Click Me</button>
+        <p id="loveMessage">Click the button to receive a sweet message!</p>
+        <button onclick="showLoveMessage()">Click Me!</button>
     </div>
 
-    <div class="game-container">
-        <h2>Love Fortune</h2>
-        <p id="fortune-result">Press the button to see your love fortune!</p>
-        <button onclick="generateLoveFortune()">Reveal</button>
-    </div>
-    
     <div class="game-container">
         <h2>Catch the Hearts</h2>
-        <p>Tap the hearts before they disappear!</p>
-        <div id="falling-hearts"></div>
-        <p>Score: <span id="heart-score">0</span></p>
-        <button onclick="startHeartGame()">Start</button>
-    </div>
-    
-    <div class="game-container">
-        <h2>Love Memory Game</h2>
-        <p>Match the cards to reveal a special message!</p>
-        <button onclick="startMemoryGame()">Play</button>
+        <p>Tap the screen to catch as many hearts as you can!</p>
+        <canvas id="heartCanvas" width="300" height="400" style="background: lightpink;"></canvas>
     </div>
 
     <div class="game-container">
-        <h2>Love Puzzle</h2>
-        <p>Rearrange the pieces to complete the picture!</p>
-        <button onclick="startPuzzleGame()">Start</button>
+        <h2>Create a Bouquet</h2>
+        <p>Choose flowers to make the perfect bouquet for you, my love.</p>
+        <select id="flowerSelection">
+            <option>🌹 Red Rose</option>
+            <option>🌷 Tulip</option>
+            <option>🌻 Sunflower</option>
+            <option>🌸 Cherry Blossom</option>
+            <option>💐 Mixed Flowers</option>
+            <option>🌺 Hibiscus</option>
+            <option>🌼 Daisy</option>
+            <option>🌵 Cactus Flower</option>
+            <option>🌾 Lavender</option>
+        </select>
+        <button onclick="addFlower()">Add Flower</button>
+        <p id="bouquet"></p>
+    </div>
+
+    <div class="game-container">
+        <h2>Dress Up a Teddy Bear</h2>
+        <p>Choose accessories to dress up your teddy bear!</p>
+        <select id="teddySelection">
+            <option>🎀 Pink Bow</option>
+            <option>🕶️ Cool Sunglasses</option>
+            <option>🎩 Fancy Hat</option>
+            <option>🧣 Cozy Scarf</option>
+            <option>👕 Cute Shirt</option>
+            <option>👑 Princess Crown</option>
+            <option>🎒 Backpack</option>
+        </select>
+        <button onclick="addTeddyAccessory()">Dress Up!</button>
+        <p id="teddyBear"></p>
     </div>
 
     <script>
-        let messages = [
-            "I love you more than words can say, baby!", "You make my heart smile, my love!", "You're the most beautiful, my princess!", 
-            "Every moment with you is magic!", "My heart belongs to you forever!", "You are my dream come true!", "Your love is my greatest treasure!", 
-            "I can't stop thinking about you!", "You brighten up my darkest days!", "You are the love of my life!", "Holding your hand feels like home!", 
-            "My love for you grows every day!", "You are my happily ever after!", "Being with you is my favorite place to be!", "You are my sunshine!", 
-            "I am so lucky to have you!", "Your love makes everything better!", "You are the best thing that has ever happened to me!", 
-            "I fall in love with you more each day!", "You are my forever!", "I love you to the moon and back!", "Every moment with you is precious!", 
-            "You complete me!", "Your love makes my heart race!", "You are the most amazing person I've ever known!", "I can't imagine my life without you!", 
-            "You make every day special!", "Your love is the best gift I've ever received!", "Being loved by you is the best feeling ever!", 
-            "You are my safe place!", "I cherish every second with you!", "You are my soulmate!", "I love the way you make me feel!", "You are perfect to me!", 
-            "Every little thing about you is beautiful!", "You are my pink bow-wearing princess!", "I love your laugh more than anything!", "I am grateful for you every single day!", 
-            "You are my heart, my soul, my everything!", "You are the most precious person in the world to me!", "My love for you is endless!", "I adore you more than anything!", 
-            "You are my favorite love story!", "There is no one else I'd rather spend my life with!", "You are the definition of perfection to me!", 
-            "Your love makes every moment beautiful!", "You are my greatest adventure!", "I am completely and utterly in love with you!", "You are the best part of my life!", 
-            "My heart is yours forever, my love!", "You make my world a better place!", "Loving you is the easiest thing in the world!", "You are the most special person I have ever known!"
+        const loveMessages = [
+            "I love you more than words can express!", "You are the most beautiful girl in the world!", "Every moment with you is a treasure!", "You make my life brighter!", "Being with you is the best thing ever!", "Your smile is my sunshine!", "You are my heart, my soul, my everything!", "I can't imagine my life without you!", "You make every day special!", "I love you endlessly!", "You are my dream come true!", "You are the most perfect girl ever!", "You are my happy place!", "I love you more than all the stars in the sky!", "You are my princess, my angel, my love!", "Holding your hand feels like home!", "You are the most precious person in my life!", "Every second with you is pure happiness!", "You are my forever and always!", "My love for you grows every day!", "You are my favorite person in the whole world!", "You have the most beautiful soul!", "You make my heart race!", "You are my one and only!", "I love you more than chocolate!", "You make my life magical!", "You are my fairytale come true!", "I want to spend forever with you!", "Every time I see you, I fall in love all over again!", "You are the most adorable human ever!", "You have the cutest giggle!", "You are my sunshine on a rainy day!", "You are sweeter than candy!", "Your hugs are the best place in the world!", "You are the love of my life!", "I cherish every moment with you!", "You are my happily ever after!", "You are my shooting star!", "You make my heart melt!", "I love the way you look at me!", "You are my home!", "You are the best thing that ever happened to me!", "I am so lucky to have you!", "You are my soulmate!", "You make me the happiest person alive!", "You are perfect just the way you are!", "I adore you, my love!", "You are my light in the dark!", "You are my everything!"
         ];
-
-        function generateLoveMessage() {
-            document.getElementById("love-message").innerText = messages[Math.floor(Math.random() * messages.length)];
+        
+        function showLoveMessage() {
+            const message = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+            document.getElementById("loveMessage").innerText = message;
         }
 
-        let fortunes = ["A lifetime of love awaits you!", "Your heart will always be full!", "You and your love will grow stronger!", "Happiness in love is guaranteed!", "A special surprise is coming soon!" /* Add 45 more unique fortunes */];
-
-        function generateLoveFortune() {
-            document.getElementById("fortune-result").innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+        function addFlower() {
+            const flower = document.getElementById("flowerSelection").value;
+            document.getElementById("bouquet").innerText += flower + " ";
         }
 
-        function startHeartGame() {
-            let score = 0;
-            document.getElementById("heart-score").innerText = score;
-            let heartContainer = document.getElementById("falling-hearts");
-            heartContainer.innerHTML = "";
-
-            for (let i = 0; i < 10; i++) {
-                let heart = document.createElement("div");
-                heart.innerText = "❤️";
-                heart.className = "heart";
-                heart.style.left = Math.random() * 90 + "%";
-                heart.style.top = "0px";
-                heartContainer.appendChild(heart);
-
-                let fall = setInterval(() => {
-                    heart.style.top = parseInt(heart.style.top) + 5 + "px";
-                    if (parseInt(heart.style.top) > 280) {
-                        clearInterval(fall);
-                        heart.remove();
-                    }
-                }, 200);
-
-                heart.onclick = function () {
-                    score++;
-                    document.getElementById("heart-score").innerText = score;
-                    heart.remove();
-                };
-            }
+        function addTeddyAccessory() {
+            const accessory = document.getElementById("teddySelection").value;
+            document.getElementById("teddyBear").innerText += accessory + " ";
         }
     </script>
 </body>
