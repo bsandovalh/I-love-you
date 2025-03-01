@@ -9,6 +9,7 @@
             background-color: pink;
             text-align: center;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         h1 {
             color: white;
@@ -21,6 +22,7 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         button {
             padding: 10px;
@@ -35,144 +37,111 @@
         button:hover {
             background-color: deeppink;
         }
-        .hidden {
-            display: none;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            justify-content: center;
-        }
-        .memory-card {
-            width: 80px;
-            height: 80px;
-            background-color: lightpink;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .heart {
+            position: absolute;
             font-size: 24px;
+            color: red;
+            user-select: none;
             cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
     <h1>💕 Love Mini Games for My Princess Jocelyn 💕</h1>
-    
-    <div class="game-container" id="clickForLove">
-        <h2>Click for Love</h2>
-        <p id="loveMessage">Click the button to see how much I love you, baby!</p>
-        <button onclick="showLoveMessage()">Click Me!</button>
-    </div>
-    
-    <div class="game-container" id="loveMeter">
-        <h2>Love Meter</h2>
-        <input type="range" id="loveRange" min="1" max="100" value="50">
-        <p id="loveResult">Move the slider to see your result!</p>
-        <button onclick="showLoveMeter()">Reveal Love Level</button>
-    </div>
-    
-    <div class="game-container" id="memoryMatch">
-        <h2>Memory Match</h2>
-        <div class="grid" id="memoryGrid"></div>
-    </div>
-    
-    <div class="game-container" id="fortuneWheel">
-        <h2>Love Fortune Wheel</h2>
-        <p id="fortuneResult">Spin to get a love message!</p>
-        <button onclick="spinWheel()">Spin</button>
-    </div>
-    
-    <div class="game-container" id="catchHearts">
+
+    <!-- Game 1: Catch the Hearts -->
+    <div class="game-container">
         <h2>Catch the Hearts</h2>
-        <p>Tap as many falling hearts as you can!</p>
+        <p>Tap the falling hearts to collect points!</p>
         <button onclick="startHeartGame()">Start</button>
         <p id="heartScore">Score: 0</p>
     </div>
-    
+
+    <!-- Game 2: Click for Love -->
+    <div class="game-container">
+        <h2>How Much Do I Love You?</h2>
+        <p>Click to get a new love message!</p>
+        <button onclick="increaseLove()">Click Me!</button>
+        <p id="loveMessage"></p>
+    </div>
+
+    <!-- Game 3: Love Fortune -->
+    <div class="game-container">
+        <h2>Your Love Fortune</h2>
+        <p>Click to get a cute message!</p>
+        <button onclick="getFortune()">Get Fortune</button>
+        <p id="fortuneMessage"></p>
+    </div>
+
+    <!-- Game 4: Love Maze -->
+    <div class="game-container">
+        <h2>Help the Heart Find its Way!</h2>
+        <p>Guide the heart to reach Jocelyn! (Use arrow keys)</p>
+        <canvas id="loveMaze" width="200" height="200" style="border:1px solid black;"></canvas>
+        <p id="mazeStatus"></p>
+    </div>
+
+    <!-- Game 5: Love Letter Builder -->
+    <div class="game-container">
+        <h2>Build a Love Letter</h2>
+        <p>Click words to form a message!</p>
+        <button onclick="addWord('Jocelyn')">Jocelyn</button>
+        <button onclick="addWord('is')">is</button>
+        <button onclick="addWord('my')">my</button>
+        <button onclick="addWord('love')">love</button>
+        <button onclick="addWord('forever')">forever</button>
+        <p id="loveLetter"></p>
+    </div>
+
     <script>
-        function showLoveMessage() {
-            const messages = [
-                "I love you more than all the stars in the sky, princess!", 
-                "You're the best thing that ever happened to me, my love!", 
-                "Every moment with you is magical, baby!", 
-                "You're my pink bow-wearing, flower-loving princess, Jocelyn!", 
-                "I adore you with all my heart, beautiful!", 
-                "You're my sunshine on a cloudy day!",
-                "Every second with you is a blessing!", 
-                "You're my forever and always! 💕"
-            ];
-            document.getElementById("loveMessage").innerText = messages[Math.floor(Math.random() * messages.length)];
+        // Catch the Hearts Game
+        let heartScore = 0;
+        function startHeartGame() {
+            heartScore = 0;
+            document.getElementById("heartScore").innerText = `Score: ${heartScore}`;
+            setInterval(createHeart, 800);
         }
-
-        function showLoveMeter() {
-            const loveValue = document.getElementById("loveRange").value;
-            let response = "";
-            if (loveValue < 30) response = "I love you a little!";
-            else if (loveValue < 70) response = "I love you a lot, my love!";
-            else response = "I love you more than words can say, baby!";
-            document.getElementById("loveResult").innerText = response;
-        }
-
-        function generateMemoryMatch() {
-            const emojis = ['💖', '🌸', '🎀', '💋', '💖', '🌸', '🎀', '💋'];
-            emojis.sort(() => Math.random() - 0.5);
-            
-            const grid = document.getElementById("memoryGrid");
-            grid.innerHTML = "";
-            
-            emojis.forEach((emoji, index) => {
-                let card = document.createElement("div");
-                card.classList.add("memory-card");
-                card.dataset.emoji = emoji;
-                card.innerText = "❓";
-                card.onclick = () => flipCard(card);
-                grid.appendChild(card);
+        function createHeart() {
+            let heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = "0px";
+            document.body.appendChild(heart);
+            let fallInterval = setInterval(() => {
+                let top = parseFloat(getComputedStyle(heart).top || 0);
+                if (top > window.innerHeight - 20) {
+                    clearInterval(fallInterval);
+                    heart.remove();
+                } else {
+                    heart.style.top = (top + 5) + "px";
+                }
+            }, 50);
+            heart.addEventListener("click", () => {
+                heartScore++;
+                document.getElementById("heartScore").innerText = `Score: ${heartScore}`;
+                heart.remove();
             });
         }
 
-        let flippedCards = [];
-        function flipCard(card) {
-            if (flippedCards.length < 2 && !card.classList.contains("matched")) {
-                card.innerText = card.dataset.emoji;
-                flippedCards.push(card);
-            }
-            
-            if (flippedCards.length === 2) {
-                setTimeout(checkMatch, 500);
-            }
+        // Click for Love
+        const loveMessages = Array(50).fill().map((_, i) => `I love you more than ${i+1} times infinity!`);
+        function increaseLove() {
+            let message = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+            document.getElementById("loveMessage").innerText = message;
         }
 
-        function checkMatch() {
-            if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
-                flippedCards[0].classList.add("matched");
-                flippedCards[1].classList.add("matched");
-            } else {
-                flippedCards[0].innerText = "❓";
-                flippedCards[1].innerText = "❓";
-            }
-            flippedCards = [];
+        // Love Fortune
+        const fortunes = Array(50).fill().map((_, i) => `Your love is as strong as ${i+1} mountains!`);
+        function getFortune() {
+            let randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            document.getElementById("fortuneMessage").innerText = randomFortune;
         }
 
-        function spinWheel() {
-            const fortunes = [
-                "You will get unlimited kisses today! 💋", 
-                "I owe you a million cuddles! 🥰", 
-                "You're the queen of my heart forever! 👑", 
-                "I love you to infinity and beyond! 💖"
-            ];
-            document.getElementById("fortuneResult").innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+        // Love Maze
+        function addWord(word) {
+            document.getElementById("loveLetter").innerText += ` ${word}`;
         }
-
-        function startHeartGame() {
-            let score = 0;
-            document.getElementById("heartScore").innerText = `Score: ${score}`;
-            alert("Pretend you're tapping hearts to score points!");
-        }
-
-        window.onload = generateMemoryMatch;
     </script>
 </body>
 </html>
