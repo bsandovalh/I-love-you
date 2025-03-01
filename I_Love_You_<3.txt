@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Much Do I Love You?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #ffe6f2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #ff4081;
+            font-size: 2em;
+        }
+        p {
+            font-size: 1.2em;
+            color: #444;
+        }
+        #game {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: 0.3s;
+            margin-top: 20px;
+            touch-action: manipulation;
+        }
+        button:hover {
+            background-color: #e91e63;
+        }
+        #message {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>How Much Do I Love You? ❤️</h1>
+    <p>Tap the button to find out!</p>
+
+    <div id="game">
+        <button onclick="showLove()">💖 Tap Me 💖</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        function showLove() {
+            const messages = [
+                "More than all the stars in the sky! ✨",
+                "More than a panda loves bamboo! 🐼",
+                "More than words can ever say! 💖",
+                "To infinity and beyond! 🚀",
+                "More than yesterday, but less than tomorrow! ❤️",
+                "Like, A LOT! (Seriously, A LOT A LOT.) 😊"
+            ];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById("message").innerText = randomMessage;
+        }
+    </script>
+
+</body>
+</html>
