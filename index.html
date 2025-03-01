@@ -9,30 +9,34 @@
             background-color: pink;
             text-align: center;
             font-family: Arial, sans-serif;
-            overflow: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
         h1 {
             color: white;
-            font-size: 36px;
+            font-size: 24px;
             text-shadow: 2px 2px 5px hotpink;
         }
         .game-container {
-            margin: 20px;
-            padding: 20px;
+            margin: 20px auto;
+            padding: 15px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            position: relative;
+            max-width: 90%;
         }
         button {
-            padding: 10px;
+            padding: 12px;
             margin: 10px;
             border: none;
             background-color: hotpink;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
+            width: 80%;
         }
         button:hover {
             background-color: deeppink;
@@ -73,26 +77,6 @@
         <p id="fortuneMessage"></p>
     </div>
 
-    <!-- Game 4: Love Maze -->
-    <div class="game-container">
-        <h2>Help the Heart Find its Way!</h2>
-        <p>Guide the heart to reach Jocelyn! (Use arrow keys)</p>
-        <canvas id="loveMaze" width="200" height="200" style="border:1px solid black;"></canvas>
-        <p id="mazeStatus"></p>
-    </div>
-
-    <!-- Game 5: Love Letter Builder -->
-    <div class="game-container">
-        <h2>Build a Love Letter</h2>
-        <p>Click words to form a message!</p>
-        <button onclick="addWord('Jocelyn')">Jocelyn</button>
-        <button onclick="addWord('is')">is</button>
-        <button onclick="addWord('my')">my</button>
-        <button onclick="addWord('love')">love</button>
-        <button onclick="addWord('forever')">forever</button>
-        <p id="loveLetter"></p>
-    </div>
-
     <script>
         // Catch the Hearts Game
         let heartScore = 0;
@@ -125,22 +109,58 @@
         }
 
         // Click for Love
-        const loveMessages = Array(50).fill().map((_, i) => `I love you more than ${i+1} times infinity!`);
+        const loveMessages = [
+            "Baby, you are the best thing that ever happened to me!",
+            "Princess, every second with you is a dream come true.",
+            "Beautiful, my love for you grows stronger every day.",
+            "My love, you make my world brighter than the sun!",
+            "I adore you more than words can express.",
+            "You are my heart, my soul, my everything.",
+            "Every moment with you is precious and unforgettable.",
+            "Your smile is my favorite thing in the world.",
+            "I love you more than all the stars in the sky.",
+            "My love for you is as infinite as the universe.",
+            "Holding your hand is my favorite feeling.",
+            "You are my home, my peace, my happiness.",
+            "You are the reason my heart beats with joy.",
+            "Loving you is the easiest thing in the world.",
+            "You make my life complete just by being in it.",
+            "I cherish you more than words can say.",
+            "No one in this world could ever replace you.",
+            "Every day with you is the best day of my life.",
+            "You are my forever and always.",
+            "My heart belongs to you, and only you.",
+            "If love was a flower, you'd be the whole garden.",
+            "You're the peanut butter to my jelly!",
+            "I fall in love with you all over again, every day.",
+            "I am the luckiest person in the world to have you.",
+            "You are my sunshine on the rainiest days.",
+            "Your love is the greatest gift I have ever received.",
+            "I want to love you today, tomorrow, and forever.",
+            "My heart beats only for you, my love.",
+            "You are the most beautiful part of my life.",
+            "With you, every moment is magical.",
+            "Your love makes my heart feel at home.",
+            "You are my happily ever after.",
+            "I will love you until the end of time.",
+            "You make my life sweeter than a fairytale.",
+            "No distance can ever separate our love.",
+            "You complete me in every possible way.",
+            "Every heartbeat of mine whispers your name.",
+            "I love you endlessly, my sweet princess.",
+            "You are the reason for my biggest smiles.",
+            "With you, life is more beautiful than ever.",
+            "My love for you is stronger than anything else.",
+            "I am forever grateful for you, my love.",
+            "You are my best friend, my soulmate, my everything.",
+            "My love for you knows no limits.",
+            "You are my dream come true, my love.",
+            "Forever isn’t long enough to love you.",
+            "You are the light in my life, my beautiful angel."
+        ];
         function increaseLove() {
             let message = loveMessages[Math.floor(Math.random() * loveMessages.length)];
             document.getElementById("loveMessage").innerText = message;
-        }
-
-        // Love Fortune
-        const fortunes = Array(50).fill().map((_, i) => `Your love is as strong as ${i+1} mountains!`);
-        function getFortune() {
-            let randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-            document.getElementById("fortuneMessage").innerText = randomFortune;
-        }
-
-        // Love Maze
-        function addWord(word) {
-            document.getElementById("loveLetter").innerText += ` ${word}`;
         }
     </script>
 </body>
