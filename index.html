@@ -3,76 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How Much Do I Love You?</title>
+    <title>Love Games 💖</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             background-color: #ffe6f2;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            color: #ff3399;
             margin: 0;
+            padding: 20px;
         }
         h1 {
-            color: #ff4081;
             font-size: 2em;
+            margin-bottom: 10px;
         }
-        p {
-            font-size: 1.2em;
-            color: #444;
-        }
-        #game {
-            margin-top: 20px;
+        .game-container {
+            background: #ffccdd;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px #ff66a3;
+            margin: 20px auto;
+            max-width: 400px;
         }
         button {
-            background-color: #ff4081;
-            color: white;
+            background: #ff66a3;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.5em;
+            padding: 10px 20px;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
             cursor: pointer;
-            border-radius: 15px;
-            transition: 0.3s;
-            margin-top: 20px;
-            touch-action: manipulation;
+            margin: 5px;
         }
         button:hover {
-            background-color: #e91e63;
+            background: #ff3399;
         }
-        #message {
-            font-size: 1.5em;
-            margin-top: 20px;
-            color: #333;
-            max-width: 80%;
+        .hidden {
+            display: none;
+        }
+        .love-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3399;
         }
     </style>
 </head>
 <body>
 
-    <h1>How Much Do I Love You? ❤️</h1>
-    <p>Tap the button to find out!</p>
+    <h1>💕 Love Games 💕</h1>
+    
+    <div>
+        <button onclick="showGame('love-meter')">💖 Love Meter</button>
+        <button onclick="showGame('love-match')">💞 Love Match</button>
+        <button onclick="showGame('click-love')">❤️ Click for Love</button>
+    </div>
 
-    <div id="game">
-        <button onclick="showLove()">💖 Tap Me 💖</button>
-        <p id="message"></p>
+    <!-- Love Meter Game -->
+    <div id="love-meter" class="game-container hidden">
+        <h2>How Much Do I Love You? 💕</h2>
+        <p>Pick an answer, and I'll tell you! 😊</p>
+        <button onclick="showLove('A LOT!! 💖💖💖')">A lot</button>
+        <button onclick="showLove('More than anything in the world! 🌍💕')">More than anything</button>
+        <button onclick="showLove('Forever and ever! ♾️❤️')">Forever</button>
+        <button onclick="showLove('More than words can say! 🥰')">More than words</button>
+        <p id="love-result" class="love-score"></p>
+        <button onclick="goBack()">⬅️ Back</button>
+    </div>
+
+    <!-- Love Match Game -->
+    <div id="love-match" class="game-container hidden">
+        <h2>💞 Love Match! 💞</h2>
+        <p>Click two words to see if they match our love! 😍</p>
+        <button onclick="checkMatch('soulmate')">Soul</button>
+        <button onclick="checkMatch('forever')">Forever</button>
+        <button onclick="checkMatch('soulmate')">Mate</button>
+        <button onclick="checkMatch('forever')">Us</button>
+        <p id="match-result" class="love-score"></p>
+        <button onclick="resetMatch()">🔄 Try Again</button>
+        <button onclick="goBack()">⬅️ Back</button>
+    </div>
+
+    <!-- Click for Love Game -->
+    <div id="click-love" class="game-container hidden">
+        <h2>❤️ Click for Love! ❤️</h2>
+        <p>Click to add more love points! 🥰</p>
+        <p id="love-points" class="love-score">0 ❤️</p>
+        <button onclick="addLove()">💖 Click Me! 💖</button>
+        <button onclick="goBack()">⬅️ Back</button>
     </div>
 
     <script>
-        function showLove() {
-            const messages = [
-                "More than all the stars in the sky! ✨",
-                "More than a panda loves bamboo! 🐼",
-                "More than words can ever say! 💖",
-                "To infinity and beyond! 🚀",
-                "More than yesterday, but less than tomorrow! ❤️",
-                "Like, A LOT! (Seriously, A LOT A LOT.) 😊"
-            ];
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById("message").innerText = randomMessage;
+        function showGame(gameId) {
+            document.getElementById('love-meter').classList.add('hidden');
+            document.getElementById('love-match').classList.add('hidden');
+            document.getElementById('click-love').classList.add('hidden');
+            document.getElementById(gameId).classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('love-meter').classList.add('hidden');
+            document.getElementById('love-match').classList.add('hidden');
+            document.getElementById('click-love').classList.add('hidden');
+        }
+
+        function showLove(message) {
+            document.getElementById('love-result').innerText = message;
+        }
+
+        let selectedWords = [];
+        function checkMatch(word) {
+            selectedWords.push(word);
+            if (selectedWords.length === 2) {
+                if (selectedWords[0] === selectedWords[1]) {
+                    document.getElementById('match-result').innerText = "💖 Perfect Match! Just like us! 💖";
+                } else {
+                    document.getElementById('match-result').innerText = "❌ Nope, but still love you! 😘";
+                }
+                selectedWords = [];
+            }
+        }
+
+        function resetMatch() {
+            document.getElementById('match-result').innerText = "";
+            selectedWords = [];
+        }
+
+        let lovePoints = 0;
+        function addLove() {
+            lovePoints++;
+            document.getElementById('love-points').innerText = lovePoints + " ❤️";
         }
     </script>
 
