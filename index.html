@@ -3,164 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💕 Love Games for Jocelyn 💕</title>
+    <title>Love Games for Jocelyn</title>
     <style>
         body {
-            background-color: pink;
-            text-align: center;
             font-family: Arial, sans-serif;
-            overflow-y: auto;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
+            text-align: center;
+            background-color: pink;
             color: white;
-            font-size: 24px;
-            text-shadow: 2px 2px 5px hotpink;
+            padding: 20px;
         }
         .game-container {
             margin: 20px auto;
-            padding: 15px;
-            background-color: white;
+            padding: 20px;
+            background: #ff69b4;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 90%;
+            box-shadow: 0px 0px 10px #d14791;
         }
         button {
-            padding: 12px;
-            margin: 10px;
+            background-color: white;
+            color: #ff69b4;
             border: none;
-            background-color: hotpink;
-            color: white;
-            font-size: 16px;
+            padding: 10px;
+            margin-top: 10px;
             cursor: pointer;
             border-radius: 5px;
-            width: 80%;
         }
         button:hover {
-            background-color: deeppink;
-        }
-        .heart {
-            position: absolute;
-            font-size: 24px;
-            color: red;
-            user-select: none;
-            cursor: pointer;
+            background-color: #ffe6f2;
         }
     </style>
 </head>
 <body>
-    <h1>💕 Love Mini Games for My Princess Jocelyn 💕</h1>
-
-    <!-- Game 1: Catch the Hearts -->
+    <h1>For My Love, Jocelyn ❤️</h1>
+    
     <div class="game-container">
-        <h2>Catch the Hearts</h2>
-        <p>Tap the falling hearts to collect points!</p>
-        <button onclick="startHeartGame()">Start</button>
-        <p id="heartScore">Score: 0</p>
+        <h2>Click for Love</h2>
+        <p id="loveMessage">Click the button to get a sweet message!</p>
+        <button onclick="generateLoveMessage()">Click Me</button>
     </div>
 
-    <!-- Game 2: Click for Love -->
     <div class="game-container">
-        <h2>How Much Do I Love You?</h2>
-        <p>Click to get a new love message!</p>
-        <button onclick="increaseLove()">Click Me!</button>
-        <p id="loveMessage"></p>
-    </div>
-
-    <!-- Game 3: Love Fortune -->
-    <div class="game-container">
-        <h2>Your Love Fortune</h2>
-        <p>Click to get a cute message!</p>
-        <button onclick="getFortune()">Get Fortune</button>
-        <p id="fortuneMessage"></p>
+        <h2>Love Fortune</h2>
+        <p id="loveFortune">Click the button to get your love fortune!</p>
+        <button onclick="generateLoveFortune()">Get Fortune</button>
     </div>
 
     <script>
-        // Catch the Hearts Game
-        let heartScore = 0;
-        function startHeartGame() {
-            heartScore = 0;
-            document.getElementById("heartScore").innerText = `Score: ${heartScore}`;
-            setInterval(createHeart, 800);
-        }
-        function createHeart() {
-            let heart = document.createElement("div");
-            heart.classList.add("heart");
-            heart.innerHTML = "❤️";
-            heart.style.left = Math.random() * window.innerWidth + "px";
-            heart.style.top = "0px";
-            document.body.appendChild(heart);
-            let fallInterval = setInterval(() => {
-                let top = parseFloat(getComputedStyle(heart).top || 0);
-                if (top > window.innerHeight - 20) {
-                    clearInterval(fallInterval);
-                    heart.remove();
-                } else {
-                    heart.style.top = (top + 5) + "px";
-                }
-            }, 50);
-            heart.addEventListener("click", () => {
-                heartScore++;
-                document.getElementById("heartScore").innerText = `Score: ${heartScore}`;
-                heart.remove();
-            });
+        const loveMessages = [
+            "You are the best thing that ever happened to me, my love! ❤️",
+            "Every moment with you is a treasure, my princess! 💖",
+            "I love you more than words can express, my beautiful! 💕",
+            "You are my everything, baby! 😘",
+            "You make my world brighter just by being in it! ✨",
+            "You are my sunshine, even on the cloudiest days! ☀️",
+            "With you, every day feels magical! ✨",
+            "You make my heart skip a beat! 💓",
+            "My love for you grows stronger every second! ⏳❤️",
+            "You are my dream come true! 🌙✨",
+            "I’d choose you in every lifetime! 🔄💕",
+            "You are the reason for my biggest smiles! 😊",
+            "Just thinking about you makes my heart warm! 🔥",
+            "I am so grateful to have you in my life! 🥰",
+            "You complete me, my love! 🧩❤️",
+            "You make everything feel perfect! 🌟",
+            "You are the love story I never want to end! 📖💕",
+            "Your love is my greatest gift! 🎁❤️",
+            "Being with you is my favorite place to be! 🏡💖",
+            "You are the most beautiful person inside and out! 😍",
+            "You have my heart forever, my love! 🔒❤️",
+            "Every second with you is priceless! ⏳💖",
+            "I love you more than yesterday, but less than tomorrow! 🥰",
+            "You are the best part of my every day! 🌞❤️",
+            "I’d cross the universe for you! 🌌💖",
+            "My love for you is endless! ♾️💕",
+            "You are my happy place! 🏝️❤️",
+            "Loving you is the easiest thing in the world! 💘",
+            "Your love is my greatest adventure! 🏔️❤️",
+            "I am the luckiest person to have you! 🍀💕",
+            "Every love song reminds me of you! 🎶❤️",
+            "You are my fairytale ending! 📚💕",
+            "No one else in the world could ever be you, my love! 🌎💖",
+            "You are the best surprise life has given me! 🎉❤️",
+            "Being with you feels like a dream! 🌙✨",
+            "Your love is my safe haven! 🏡❤️",
+            "You are my heart’s favorite person! 💓",
+            "If love had a face, it would be yours! 😍",
+            "You are my perfect match! 💞",
+            "I love you more than all the stars in the sky! ✨❤️",
+            "You make my world infinitely better! 🌍💕",
+            "With you, forever isn’t long enough! ♾️❤️",
+            "You are my one and only! 💖",
+            "Loving you is my favorite thing to do! 💘",
+            "You are the best thing that has ever been mine! 🎶❤️",
+            "Your love is my superpower! 💪💖",
+            "You are the sparkle in my life! ✨💖",
+            "No matter what, I’ll always choose you! 🔄❤️",
+            "You are my favorite hello and hardest goodbye! 👋💕",
+            "You have made my life so much more beautiful! 🌹💖",
+            "I love you endlessly, my beautiful! 💕"
+        ];
+
+        function generateLoveMessage() {
+            const randomIndex = Math.floor(Math.random() * loveMessages.length);
+            document.getElementById("loveMessage").innerText = loveMessages[randomIndex];
         }
 
-        // Click for Love
-        const loveMessages = [
-            "Baby, you are the best thing that ever happened to me!",
-            "Princess, every second with you is a dream come true.",
-            "Beautiful, my love for you grows stronger every day.",
-            "My love, you make my world brighter than the sun!",
-            "I adore you more than words can express.",
-            "You are my heart, my soul, my everything.",
-            "Every moment with you is precious and unforgettable.",
-            "Your smile is my favorite thing in the world.",
-            "I love you more than all the stars in the sky.",
-            "My love for you is as infinite as the universe.",
-            "Holding your hand is my favorite feeling.",
-            "You are my home, my peace, my happiness.",
-            "You are the reason my heart beats with joy.",
-            "Loving you is the easiest thing in the world.",
-            "You make my life complete just by being in it.",
-            "I cherish you more than words can say.",
-            "No one in this world could ever replace you.",
-            "Every day with you is the best day of my life.",
-            "You are my forever and always.",
-            "My heart belongs to you, and only you.",
-            "If love was a flower, you'd be the whole garden.",
-            "You're the peanut butter to my jelly!",
-            "I fall in love with you all over again, every day.",
-            "I am the luckiest person in the world to have you.",
-            "You are my sunshine on the rainiest days.",
-            "Your love is the greatest gift I have ever received.",
-            "I want to love you today, tomorrow, and forever.",
-            "My heart beats only for you, my love.",
-            "You are the most beautiful part of my life.",
-            "With you, every moment is magical.",
-            "Your love makes my heart feel at home.",
-            "You are my happily ever after.",
-            "I will love you until the end of time.",
-            "You make my life sweeter than a fairytale.",
-            "No distance can ever separate our love.",
-            "You complete me in every possible way.",
-            "Every heartbeat of mine whispers your name.",
-            "I love you endlessly, my sweet princess.",
-            "You are the reason for my biggest smiles.",
-            "With you, life is more beautiful than ever.",
-            "My love for you is stronger than anything else.",
-            "I am forever grateful for you, my love.",
-            "You are my best friend, my soulmate, my everything.",
-            "My love for you knows no limits.",
-            "You are my dream come true, my love.",
-            "Forever isn’t long enough to love you.",
-            "You are the light in my life, my beautiful angel."
+        const loveFortunes = [
+            "Your love will grow stronger every day! ❤️",
+            "A beautiful surprise is coming your way! 🎁",
+            "You and your love are meant to be forever! 💞",
+            "Your heart will always find its way home! 🏡",
+            "Love will lead you to happiness beyond measure! 😊",
+            "Every challenge will only make your love stronger! 💪",
+            "A romantic adventure is just around the corner! ✈️",
+            "True love will shine even in the darkest times! ✨",
+            "Your love story will be one for the ages! 📖",
+            "A sweet moment awaits you soon! 🍭"
         ];
-        function increaseLove() {
-            let message = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-            document.getElementById("loveMessage").innerText = message;
+
+        function generateLoveFortune() {
+            const randomIndex = Math.floor(Math.random() * loveFortunes.length);
+            document.getElementById("loveFortune").innerText = loveFortunes[randomIndex];
         }
     </script>
 </body>
